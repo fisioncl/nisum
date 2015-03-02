@@ -18,30 +18,35 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-//TODO: Add thread safety to this!!
 public class InventoryCSV implements Inventory{
 	private static final Logger log = LogManager.getLogger(Inventory.class);
 
-	//TODO: Put this in a property file.
-	private static final String FILE_NAME = "ohmy.csv";
-
-	public void toCSV(List<Item> items) {
+	public Long toCSV(List<Item> items, Appendable out) {
 		SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMDD");
 
+		CSVPrinter p = null;
+
 		try {
-			Appendable out = new FileWriter(FILE_NAME);
-			CSVPrinter p = new CSVPrinter(out, CSVFormat.EXCEL);
+			p = new CSVPrinter(out, CSVFormat.EXCEL);
+			Long lw = 0;
 
 			for (Item i : items) {
 				p.print(i.getSerialNumber());
 				p.print(i.getDescription());
 				p.print(sdf.format(i.getBuyDate()));
 				p.println();
+				lw++;
 			}
 
 			p.close();
+
+			return lw;
+
 		} catch (Exception e) {
 			log.error(e.getMessage());
+
+		} finally {
+			if(p != null) p.close();
 		}
 	}
 

@@ -35,4 +35,9 @@ public class InventoryCSVTest {
 		assertNotNull("Item mut be returned.", i.get(3L));
 		assertNull("Item not exist. Must be null.", i.get(23456L));
 	}
+
+	@Test
+	public void testException() {
+
+	}
 }

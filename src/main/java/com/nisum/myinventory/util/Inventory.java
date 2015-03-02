@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface Inventory {
 	public Item get(Long sn);
-	public void toCSV(List<Item> items);
+	public Long toCSV(List<Item> items, Appendable destination);
 }
