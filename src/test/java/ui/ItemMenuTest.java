@@ -31,6 +31,7 @@ public class ItemMenuTest {
     @Before
     public void before() throws UIException{
         MockitoAnnotations.initMocks(this);
+
         doThrow(new UIException("Item does not exists.")).when(imenu).showItem(eq(0L));
         doThrow(new UIException("Item does not exists.")).when(imenu).updateItem(eq(0L), any(Item.class));
         doThrow(new UIException("Item does not exists.")).when(imenu).deleteItem(eq(0L));
