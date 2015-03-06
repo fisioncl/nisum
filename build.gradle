@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 
 mainClassName = 'com.nisum.myinventory.ExportInventory'
 
@@ -12,6 +13,7 @@ dependencies {
 	compile "org.apache.commons:commons-csv:1.0"
 	compile "org.apache.logging.log4j:log4j-api:2.1"
 	compile "org.apache.logging.log4j:log4j-core:2.1"
+    compile "commons-cli:commons-cli:1.2"
 
 	testCompile "junit:junit:4.12"
     testCompile "org.mockito:mockito-core:1.+"
@@ -20,6 +22,12 @@ dependencies {
 jar {
     baseName = 'MyInventory'
     version = '0.1.0'
+}
+
+run {
+    if ( project.hasProperty("appArgs") ) {
+        args Eval.me(appArgs)
+    }
 }
 
 task wrapper(type: Wrapper) {
