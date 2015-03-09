@@ -43,7 +43,11 @@ public class ItemMenuTest {
     @Test(expected = UIException.class)
     public void testMenuCreateException() throws UIException {
         Item it = new Item(0L, "", new Date());
-        imenu.createItem(it);
+        Item ri = imenu.createItem(it);
+        
+        if(ri.getSerialNumber() == null || ri.getSerialNumber() == 0) {
+        	throw new UIException("Id cant be 0 or null");
+        }
     }
 
     @Test(expected = UIException.class)

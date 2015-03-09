@@ -1,6 +1,6 @@
 package com.nisum.myinventory;
 
-import com.nisum.myinventory.service.InventoryService;
+import com.nisum.myinventory.service.InventoryServiceCSV;
 import com.nisum.myinventory.exception.InventoryServiceException;
 import org.apache.commons.cli.*;
 
@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class ExportInventory {
 	public static void main(String[] args) {
-        InventoryService iServices = new InventoryService();
+        InventoryServiceCSV iServices = new InventoryServiceCSV();
 
         CommandLineParser parser = new BasicParser();
         Options ops = new Options();

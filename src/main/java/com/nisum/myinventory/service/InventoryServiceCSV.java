@@ -12,10 +12,10 @@ import java.util.List;
 /**
  * Created by cristian on 03-03-15.
  */
-public class InventoryService {
+public class InventoryServiceCSV {
     private List<Item> items = new ArrayList<>();
 
-    public InventoryService() {
+    public InventoryServiceCSV() {
         items.add(new Item(21L, "Dos y Uno", new Date()));
         items.add(new Item(34L, "Tres y Cuatro", new Date()));
         items.add(new Item(46L, "Cuatro y Seis", new Date()));
