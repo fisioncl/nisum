@@ -20,7 +20,7 @@ import java.util.List;
 
 public class InventoryCSV implements Inventory{
 	private static final Logger log = LogManager.getLogger(Inventory.class);
-    private String dateFormat = "yyyyMMDD";
+	private String dateFormat = "yyyyMMDD";
 
 	/**
 	* Convert a List of Items into a CSV format.

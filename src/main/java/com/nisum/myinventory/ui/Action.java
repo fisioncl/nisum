@@ -1,9 +1,9 @@
 package com.nisum.myinventory.ui;
 
 public enum Action {
-    NEW,
-    SHOW,
-    SHOW_ALL,
-    UPDATE,
-    DELETE
+	SHOW_ALL,
+	SHOW,
+	NEW,
+	UPDATE,
+	DELETE
 }

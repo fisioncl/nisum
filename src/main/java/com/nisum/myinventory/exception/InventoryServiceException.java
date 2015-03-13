@@ -1,8 +1,5 @@
 package com.nisum.myinventory.exception;
 
-/**
- * Created by cristian on 03-03-15.
- */
 public class InventoryServiceException extends Exception {
     public InventoryServiceException(String message) {
         super(message);
