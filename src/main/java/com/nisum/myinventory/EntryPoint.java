@@ -1,18 +1,14 @@
 package com.nisum.myinventory;
 
-import java.net.URL;
-import java.net.URLClassLoader;
+import com.nisum.myinventory.ui.ItemMenu;
+import com.nisum.myinventory.ui.ItemMenuConsole;
 
 public class EntryPoint {
 	public EntryPoint() {}
 
 	public static void main(String[] args) {
-		ClassLoader cl = ClassLoader.getSystemClassLoader();
- 
-		URL[] urls = ((URLClassLoader)cl).getURLs();
- 
-		for(URL url: urls){
-			System.out.println(url.getFile());
-		} 
+		ItemMenu im = new ItemMenuConsole();
+
+		im.showMenu();
 	}
 }

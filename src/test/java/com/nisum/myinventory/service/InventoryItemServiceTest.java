@@ -2,57 +2,74 @@ package com.nisum.myinventory.service;
 
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.junit.Before;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import org.mockito.Mockito;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.AdditionalAnswers.*;
 
 import java.util.Date;
 
+import com.nisum.myinventory.domain.ItemRepository;
 import com.nisum.myinventory.exception.InventoryItemServiceException;
+import com.nisum.myinventory.exception.ItemDomainException;
 import com.nisum.myinventory.vo.Item;
 
-public class InventoryItemServiceTest {
-	InventoryItemService iis;
+public class InventoryItemServiceTest { 
+	@Mock(name="ir") private ItemRepository ir;
+	@InjectMocks private InventoryItemServiceImpl iis;
+	
+	private static final Item[] validItemsWithSN = {
+		new Item(System.nanoTime(), "Item with SerialNumber", new Date()),
+		new Item(System.nanoTime(), "Another Item with SerialNumber", new Date())
+	};
+	
+	private static final Item noSNItem = new Item(null, "Item without SerialNumber", new Date());
+	
+	private static final Item[] invalidItems = {
+		new Item(-1L, "", new Date()), 
+		new Item(null, "Item with SerialNumber", new Date()),
+		new Item(0L, "", new Date())
+	};
 
 	@Before
-	public void before() throws InventoryItemServiceException {
-		iis = Mockito.mock(InventoryItemService.class);
-
-		doAnswer(returnsFirstArg()).when(iis).createItem(any(Item.class), eq(false));
-		when(iis.createItem(any(Item.class), eq(true))).thenReturn(new Item(1234L, "1234", new Date()));
+	public void before() throws InventoryItemServiceException, ItemDomainException {
+		MockitoAnnotations.initMocks(this);
+		
+		for (Item item : validItemsWithSN) {
+			when(ir.create(eq(item), any(boolean.class))).then(returnsFirstArg());
+		}
+		
+		when(ir.create(eq(noSNItem), eq(true))).thenReturn(new Item(System.nanoTime(), "Generated ID", new Date()));
+		
+		for (Item item : invalidItems) {			
+			doThrow(ItemDomainException.class).when(ir).update(eq(item));
+			doThrow(ItemDomainException.class).when(ir).delete(eq(item.getSerialNumber()));
+			doThrow(ItemDomainException.class).when(ir).create(eq(item), eq(false));
+		}
 	}
 
 	@Test(expected=InventoryItemServiceException.class)
 	public void createItemException() throws InventoryItemServiceException {
-		Item item = new Item(0L, "", new Date());
-
-		iis.createItem(item, false);
+		iis.createItem(invalidItems[0], false);
 	}
 
 	@Test
 	public void createItemWithSN() throws InventoryItemServiceException {
-		Item p = new Item(1234L, "Item with SerialNumber", new Date());
+		Item p = validItemsWithSN[0];
 		Item r = iis.createItem(p, false);
 
 		assertEquals("Items should be the same.", p, r);
 	}
 
 	@Test
-	public void createItemWithSNAndTestExistence() throws InventoryItemServiceException {
-		Item p = new Item(1234L, "Item with SerialNumber", new Date());
-		iis.createItem(p, false);
-		Item r = iis.getItemBySN(1234L);
-
-		assertNotNull("Items should exists.", r);
-	}
-
-	@Test
 	public void createItemWithoutSN() throws InventoryItemServiceException {
-		Item p = new Item(null, "Item with SerialNumber", new Date());
+		Item p = noSNItem;
 		Item r = iis.createItem(p, true);
 
 		assertNotNull("SN must be generated after creation.", r.getSerialNumber());
@@ -60,7 +77,7 @@ public class InventoryItemServiceTest {
 
 	@Test(expected=InventoryItemServiceException.class)
 	public void updateItemException() throws InventoryItemServiceException {
-		iis.updateItem(new Item(-1L, "", new Date()));
+		iis.updateItem(invalidItems[0]);
 	}
 
 	@Test
@@ -87,20 +104,14 @@ public class InventoryItemServiceTest {
 	@Test(expected=InventoryItemServiceException.class)
 	public void InventoryItemDeleteException() throws InventoryItemServiceException {
 		// Item does not exists, should throws an Exception
-		iis.deleteItemBySN(-1L);
+		iis.deleteItemBySN(invalidItems[1].getSerialNumber());
 	}
 
 	@Test
 	public void InventoryItemDelete() throws InventoryItemServiceException {
-		Item p = new Item(1234L, "Item with SerialNumber", new Date());
-		iis.createItem(p, false);
+		Long sn = validItemsWithSN[1].getSerialNumber();
+		iis.deleteItemBySN(sn);
 
-		Item r = iis.getItemBySN(1234L);
-
-		assertNotNull("Items should exists.", r);
-
-		iis.deleteItemBySN(1234L);
-
-		assertNull("Item delete, result should be null", iis.getItemBySN(1234L));
+		assertNull("Item delete, result should be null", iis.getItemBySN(sn));
 	}
 }

@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.nisum.myinventory.exception.ItemDomainException;
+import com.nisum.myinventory.util.ApplicationConfig;
 import com.nisum.myinventory.vo.Item;
 
 import java.util.Properties;
@@ -75,6 +76,7 @@ public class ItemRepositoryCSV implements ItemRepository {
 			Item ci = (Item)items.get(i);
 			if(ci.getSerialNumber().equals(sn)) {
 				items.remove(i);
+				save(items);
 				return;
 			}
 		}	
@@ -107,17 +109,7 @@ public class ItemRepositoryCSV implements ItemRepository {
 	}
 
 	private String getFileName() {
-		try {
-			Properties ap = new Properties();
-			ap.load(new FileReader("app.properties"));
-
-			return ap.getProperty("csv.location");
-
-		} catch (IOException e) {
-			log.error("There was an error traying to read de CSV location from the property file (app.properties).", e);
-		}
-
-		return null;
+		return new ApplicationConfig().getProperty(ApplicationConfig.PropertyName.CSV_LOCATION);
 	}
 
 	private void save(List<Item> list) throws ItemDomainException {

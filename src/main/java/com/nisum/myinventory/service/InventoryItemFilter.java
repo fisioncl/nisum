@@ -40,4 +40,15 @@ public class InventoryItemFilter {
 	public void setTo(Date to) {
 		this.to = to;
 	}
+
+	public Boolean isEmpty() {
+		if(this.serialNumbers != null) return false;
+		if(this.descriptionLike != null) {
+			if(!this.descriptionLike.equals("")) return false;
+		}
+		if(this.from != null) return false;
+		if(this.to != null) return false;
+
+		return true;
+	}
 }

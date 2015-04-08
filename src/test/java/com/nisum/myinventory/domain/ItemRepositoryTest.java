@@ -11,7 +11,6 @@ import static org.mockito.AdditionalAnswers.*;
 
 import java.util.Date;
 
-import com.nisum.myinventory.exception.InventoryItemServiceException;
 import com.nisum.myinventory.vo.Item;
 import com.nisum.myinventory.exception.ItemDomainException;
 
@@ -93,6 +92,8 @@ public class ItemRepositoryTest {
 
 		ir.delete(id);
 
-		assertNull("Item delete, result should be null", ir.read(id));
+		Item mbn = ir.read(id);
+		
+		assertNull("Item delete, result should be null", mbn);
 	}
 }

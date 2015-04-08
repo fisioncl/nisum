@@ -33,15 +33,22 @@ public class Item {
 		this.buyDate = buyDate;
 	}
 
-    @Override
-    public boolean equals(Object o) {
-        if(o == null) return Boolean.FALSE;
-        if(o.getClass() != this.getClass()) return Boolean.FALSE;
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) return Boolean.FALSE;
+		if(o.getClass() != this.getClass()) return Boolean.FALSE;
 
-        Item i = (Item)o;
+		Item i = (Item)o;
+		
+		if(this.serialNumber == null && i.getSerialNumber() != null) return false;
+		if(this.serialNumber != null && i.getSerialNumber() == null) return false;
+		if(this.serialNumber != null && i.getSerialNumber() != null) {
+			if(this.serialNumber.longValue() != i.getSerialNumber().longValue()) return false;
+		}
+		
+		if(!this.description.equals(i.getDescription())) return false;
+		if(this.buyDate.compareTo(i.getBuyDate()) != 0) return false;
 
-        return serialNumber == i.getSerialNumber()
-                && description.equals(i.getDescription())
-                && buyDate.compareTo(i.getBuyDate()) == 0;
-    }
+		return true;
+	}
 }
