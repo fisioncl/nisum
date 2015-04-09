@@ -3,14 +3,19 @@ package com.nisum.myinventory.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.nisum.myinventory.domain.ItemRepository;
 import com.nisum.myinventory.exception.InventoryItemServiceException;
 import com.nisum.myinventory.exception.ItemDomainException;
 import com.nisum.myinventory.vo.Item;
 
+@Service
 public class InventoryItemServiceImpl implements InventoryItemService {
-	private ItemRepository ir = new InventoryItemRepositoryFactory().getRepository();
-
+	@Autowired
+	private ItemRepository ir;
+	
 	@Override
 	public Item createItem(Item item, Boolean genSerialNumber) throws InventoryItemServiceException {
 		List<String> hm = validateItem(item, !genSerialNumber);

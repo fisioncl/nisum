@@ -1,34 +1,48 @@
-apply plugin: 'java'
-apply plugin: 'application'
-apply plugin: 'eclipse'
+buildscript {
+	repositories { jcenter() }
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+	}
+}
 
-mainClassName = 'com.nisum.myinventory.EntryPoint'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'spring-boot'
+
+mainClassName = 'com.nisum.myinventory.Application'
 
 repositories {
-  mavenCentral()
+	//mavenCentral()
+	jcenter()
 }
 
 dependencies {
+	compile ("org.springframework.boot:spring-boot-starter-web") {
+		exclude module: "spring-boot-starter-logging"
+		exclude module: "logback-classic"
+	}
+
+	compile "org.thymeleaf:thymeleaf-spring4"
+
+	compile ("org.springframework.boot:spring-boot-starter-jdbc") {
+		exclude module: "spring-boot-starter-logging"
+		exclude module: "logback-classic"
+	}
+	compile "org.springframework.boot:spring-boot-starter-log4j2"
+
+	compile "org.mybatis:mybatis-spring:1.2.2"
+	compile "org.mybatis:mybatis:3.2.8"
+	compile "org.postgresql:postgresql:9.3-1103-jdbc41"
 	compile "org.apache.commons:commons-csv:1.0"
-	compile "org.apache.logging.log4j:log4j-api:2.1"
-	compile "org.apache.logging.log4j:log4j-core:2.1"
-    compile "commons-cli:commons-cli:1.2"
+	//compile "commons-cli:commons-cli:1.2"
 
-	testCompile "junit:junit:4.12"
-    testCompile "org.mockito:mockito-core:1.+"
+	testCompile "org.springframework.boot:spring-boot-starter-test"
 }
 
-jar {
-    baseName = 'MyInventory'
-    version = '0.1.0'
-}
+//bootRepackage {
+//	mainClass = 'com.nisum.myinventory.RunApplication'
+//}
 
-/*run {
-    if ( project.hasProperty("appArgs") ) {
-        args Eval.me(appArgs)
-    }
-}*/
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.11'
-}
+//task wrapper(type: Wrapper) {
+//	gradleVersion = '1.11'
+//}
