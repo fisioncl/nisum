@@ -6,7 +6,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.postgresql.ds.PGSimpleDataSource;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,13 +24,6 @@ public class AppConfig {
 		source.setPassword("admin");
 		
 		return source;
-	}
-
-	//@Bean
-	public DataSource dataSource() {
-		DataSourceBuilder factory = DataSourceBuilder.create();
-		
-		return factory.build();
 	}
 
 	@Bean

@@ -3,7 +3,11 @@
 <head>
 	<title>:)</title>
 	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery-1.11.2.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/moment.min.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/js/application.js}"></script>
 </head>
 <body style="margin:10px">
 	<div class="page-header">
@@ -21,23 +25,59 @@
 					<th>Buy Date</th>
 					<th>Actions</th>
 				</thead>
-				<tbody>				
+				<tbody>
 					<tr th:each="i : ${items}">
 						<td th:text="${i.serialNumber}">...</td>
 						<td th:text="${i.description}">...</td>
 						<td th:text="${i.buyDate}">...</td>
 						<td>
-							<button class="btn btn-info btn-xs">Edit</button>
-							<button class="btn btn-danger btn-xs">Delete</button>
+							<button name="edit" class="btn btn-info btn-xs" th:attr="sn=${i.serialNumber}">
+								Edit
+							</button>
+							<button name="delete" class="btn btn-danger btn-xs" th:attr="sn=${i.serialNumber}">Delete</button>
 						</td>
-					</tr>
+					</tr>|
 				</tbody>
 			</table>
-			<div class="pull-right">
-				<button class="btn btn-primary btn-sm">New Item</button>
+			<div class="pull-right" data-toggle="modal" data-target="#item">
+				<button class="btn btn-primary btn-sm">
+					New Item
+				</button>
 			</div>
 		</div>
 	</div>
 	
+	<!-- New / Edit Item -->
+	<!-- Modal -->
+	<div class="modal fade" id="item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Item Detail</h4>
+				</div>
+				<div class="modal-body">
+					<form id="itemData">
+						<input type="hidden" id="serialNumber" name="serialNumber"></input>
+						<div class="form-group">
+							<label for="description">Description</label>
+							<input type="text" class="form-control" id="description" name="description"></input>
+						</div>
+						<div class="form-group">
+							<label for="buyDate">Buy Date</label>
+							<input type="text" class="form-control" id="buyDate" name="buyDate" placeholder="01/12/2015"></input>
+						</div>
+						<!-- button type="submit" class="btn btn-default">Submit</button-->
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+					<button type="button" id="save" class="btn btn-primary btn-sm">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

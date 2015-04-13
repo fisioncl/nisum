@@ -14,13 +14,16 @@ public interface ItemMapper {
 			"VALUES (#{serialNumber}, #{description}, #{buyDate})")
 	void insert(Item item);
 	
-	@Update("UPDATE item SET description = #{description} and buy_date = #{buyDate} WHERE serial_number = #{serialNumber}")
+	@Update("UPDATE item SET description = #{description}, buy_date = #{buyDate} "
+			+ "WHERE serial_number = #{serialNumber}")
 	void update(Item item);
 
-	@Select("SELECT serial_number serialNumber, description, buy_date buyDate FROM item")
+	@Select("SELECT serial_number serialNumber, description, buy_date buyDate "
+			+ "FROM item ORDER BY serialNumber")
 	List<Item> selectAll();
 
-	@Select("SELECT * FROM item WHERE serial_number = #{serialNumber}")
+	@Select("SELECT serial_number serialNumber, description, buy_date buyDate "
+			+ "FROM item WHERE serial_number = #{serialNumber}")
 	Item selectItemById(Long serialNumber);
 	
 	@Delete("DELETE FROM item WHERE serial_number = #{serialNumber}")

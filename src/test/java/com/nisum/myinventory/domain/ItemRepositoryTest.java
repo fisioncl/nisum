@@ -19,8 +19,8 @@ public class ItemRepositoryTest {
 
 	@Before
 	public void before() throws ItemDomainException{
-		//ir = Mockito.mock(ItemRepository.class);
-		ir = new ItemRepositoryCSV();
+		ir = Mockito.mock(ItemRepository.class);
+		//ir = new ItemRepositoryCSV();
 		//doAnswer(returnsFirstArg()).when(ir).create(any(Item.class), eq(false));
 		//when(ir.create(any(Item.class), eq(true))).thenReturn(new Item(1234L, "1234", new Date()));
 	}
